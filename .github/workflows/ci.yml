@@ -1,0 +1,61 @@
+name: CI - Build and Push to Docker Hub
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      
+      - name: Install dependencies
+        run: |
+          cd my-flask-app
+          pip install -r requirements.txt
+      
+      - name: Run tests
+        run: |
+          cd my-flask-app
+          python -m pytest test_app.py -v
+      
+      - name: Log in to Docker Hub
+        run:  echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+      - name: Build image
+        run: |
+          cd my-flask-app
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-flask-app:${{ github.sha }} .
+      
+      - name: Test Docker image
+        run: |
+          cd my-flask-app
+          # Start the container in the background
+          docker run -d -p 8080:80 --name test-container ${{ secrets.DOCKER_USERNAME }}/my-flask-app:${{ github.sha }}
+          # Wait a moment for the container to start
+          sleep 5
+          # Test the endpoints
+          curl -f http://localhost:8080/ || exit 1
+          curl -f http://localhost:8080/health || exit 1
+          curl -f http://localhost:8080/status || exit 1
+          # Stop and remove the container
+          docker stop test-container
+          docker rm test-container
+      
+      - name: Push to Docker Hub
+        run: |
+          cd my-flask-app
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-flask-app:${{ github.sha }}
+      
+      - run: echo "🍏 This job's status is ${{ job.status }}."
