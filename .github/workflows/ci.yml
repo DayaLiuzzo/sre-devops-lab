@@ -32,7 +32,7 @@ jobs:
       - name: Run tests
         run: |
           cd my-flask-app
-          python -m pytest tests/test_app.py -v
+          python -m pytest test_app.py -v
       
       - name: Log in to Docker Hub
         run:  echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
