@@ -41,6 +41,3 @@ def test_status_route(client):
     # Check that memory_percent is a number between 0 and 100
     assert isinstance(data['memory_percent'], (int, float))
     assert 0 <= data['memory_percent'] <= 100
-
-def test_fail():
-    assert False, "This test should fail"
