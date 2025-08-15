@@ -11,11 +11,11 @@ CORS(app)
 def hello():
     return "Hello, World!"
 
-@app.route('/health')
+@app.route('/api/health')
 def health():
     return jsonify(status="healthy"), 200
 
-@app.route('/status')
+@app.route('/api/status')
 def status():
     version = os.getenv("APP_VERSION", "unknown")
     memory = psutil.virtual_memory()

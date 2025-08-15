@@ -7,13 +7,19 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: myflaskapp.local
-      http:
+    - http:
         paths:
-          - path: /
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: my-flask-app
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-frontend
                 port:
                   number: 80

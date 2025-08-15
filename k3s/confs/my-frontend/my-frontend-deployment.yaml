@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-frontend
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-frontend
+  template:
+    metadata:
+      labels:
+        app: my-frontend
+    spec:
+      containers:
+      - name: my-frontend-container
+        image: dliuzzo/my-frontend:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+          - name: API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: my-frontend-config
+                key: API_URL
+          - name: APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: my-frontend-config
+                key: APP_NAME
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name

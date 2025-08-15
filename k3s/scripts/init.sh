@@ -40,6 +40,8 @@ echo "Namespace dev is ready!"
 
 echo "Applying application configurations..."
 kubectl apply -f /home/vagrant/sre-lab/k3s/confs/my-flask-app/
+kubectl apply -f /home/vagrant/sre-lab/k3s/confs/my-frontend/
+
 
 echo "Applying ingress configuration..."
 kubectl apply -f /home/vagrant/sre-lab/k3s/confs/ingress.yaml
