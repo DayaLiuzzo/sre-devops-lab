@@ -40,8 +40,3 @@ This project is a hands-on SRE (Site Reliability Engineering) lab to design, bui
 
 ## 🚀 Getting Started
 
-1. 🐳 Run the App via Docker Hub
-
-```bash
-
-docker run -p 8080:80 dliuzzo/my-flask-app:v1

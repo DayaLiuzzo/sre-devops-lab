@@ -6,4 +6,3 @@ metadata:
 data:
   API_URL: "/api"
   APP_NAME: "customised-app-name"
-  # API_URL: "http://192.168.56.110/api"
