@@ -2,18 +2,20 @@ from flask import Flask, jsonify
 import humanize
 import psutil
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def hello():
     return "Hello, World!"
 
-@app.route('/health')
+@app.route('/api/health')
 def health():
     return jsonify(status="healthy"), 200
 
-@app.route('/status')
+@app.route('/api/status')
 def status():
     version = os.getenv("APP_VERSION", "unknown")
     memory = psutil.virtual_memory()

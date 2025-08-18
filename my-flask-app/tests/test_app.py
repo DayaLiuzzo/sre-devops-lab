@@ -17,14 +17,14 @@ def test_hello_route(client):
 
 def test_health_route(client):
     """Test the health check route."""
-    response = client.get('/health')
+    response = client.get('/api/health')
     assert response.status_code == 200
     data = json.loads(response.data)
     assert data['status'] == 'healthy'
 
 def test_status_route(client):
     """Test the status route returns system information."""
-    response = client.get('/status')
+    response = client.get('/api/status')
     assert response.status_code == 200
     data = json.loads(response.data)
     
