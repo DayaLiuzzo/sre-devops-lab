@@ -19,6 +19,17 @@ sudo cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
 sudo chown -R vagrant:vagrant /home/vagrant/.kube
 sudo chmod 600 /home/vagrant/.kube/config
 
+
+HOST_ENTRY="192.168.56.110 myapp.com"
+
+if ! grep -q "myapp.com" /etc/hosts; then
+    echo "$HOST_ENTRY" | sudo tee -a /etc/hosts
+    echo "Added $HOST_ENTRY to /etc/hosts"
+else
+    echo "Entry already exists in /etc/hosts"
+fi
+
+
 # Set KUBECONFIG environment variable
 export KUBECONFIG=/home/vagrant/.kube/config
 
@@ -29,26 +40,14 @@ until kubectl get nodes >/dev/null 2>&1; do
 done
 
 echo "Creating namespace..."
-kubectl apply -f /home/vagrant/sre-lab/k3s/confs/namespace.yaml
-
-echo "Waiting for namespace to be ready..."
-until kubectl get namespace dev >/dev/null 2>&1; do
-    echo "Waiting for namespace dev to be available..."
-    sleep 2
-done
-echo "Namespace dev is ready!"
-
-echo "Applying application configurations..."
-kubectl apply -f /home/vagrant/sre-lab/k3s/confs/my-flask-app/
-kubectl apply -f /home/vagrant/sre-lab/k3s/confs/my-frontend/
-
+kubectl apply -f /home/vagrant/sre-lab/cluster/dev/namespace.yaml
 
 echo "Applying ingress configuration..."
-kubectl apply -f /home/vagrant/sre-lab/k3s/confs/ingress.yaml
+kubectl apply -f /home/vagrant/sre-lab/cluster/dev/ingress.yaml
 
-echo "Waiting for deployment to be ready..."
-kubectl wait --for=condition=available deployment/my-flask-app -n dev --timeout=300s
+echo "Running monitoring setup script"
 
-echo "k3s cluster setup complete!"
-echo "Your cluster is ready with the following resources:"
-kubectl get all -n dev
+bash /home/vagrant/sre-lab/monitoring/scripts/deploy-monitoring.sh
+
+echo "Running application setup script"
+bash /home/vagrant/sre-lab/deploy-apps.sh

@@ -53,6 +53,7 @@ jobs:
           curl -f http://localhost:8080/ || exit 1
           curl -f http://localhost:8080/api/health || exit 1
           curl -f http://localhost:8080/api/status || exit 1
+          curl -f http://localhost:8080/api/metrics || exit 1
           # Stop and remove the container
           docker stop test-container
           docker rm test-container

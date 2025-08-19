@@ -41,3 +41,12 @@ def test_status_route(client):
     # Check that memory_percent is a number between 0 and 100
     assert isinstance(data['memory_percent'], (int, float))
     assert 0 <= data['memory_percent'] <= 100
+
+def test_metrics_route(client):
+    """Test the Prometheus /metrics endpoint."""
+    response = client.get('/metrics')
+    assert response.status_code == 200
+    # Check that the content type is Prometheus plaintext
+    assert response.content_type.startswith("text/plain")
+    # Optionally check that some known metric is present
+    assert b"app_request_count" in response.data or b"app_memory_total_bytes" in response.data

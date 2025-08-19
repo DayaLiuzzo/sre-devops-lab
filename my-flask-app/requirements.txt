@@ -3,3 +3,4 @@ humanize==4.12.3
 psutil==7.0.0
 pytest==8.3.4
 flask-cors==6.0.1
+prometheus_client==0.22.1

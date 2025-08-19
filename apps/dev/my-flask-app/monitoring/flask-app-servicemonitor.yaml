@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: my-flask-app
+  namespace: dev
+  labels:
+    release: prometheus   # must match the Prometheus release
+spec:
+  selector:
+    matchLabels:
+      app: my-flask-app
+  namespaceSelector:
+    matchNames:
+      - dev
+  endpoints:
+    - port: http
+      path: /api/metrics
+      interval: 15s
