@@ -46,8 +46,7 @@ echo "Applying ingress configuration..."
 kubectl apply -f /home/vagrant/sre-lab/cluster/dev/ingress.yaml
 
 echo "Running monitoring setup script"
-
 bash /home/vagrant/sre-lab/monitoring/scripts/deploy-monitoring.sh
 
-echo "Running application setup script"
-bash /home/vagrant/sre-lab/deploy-apps.sh
+echo "ArgoCD setup script"
+bash /home/vagrant/sre-lab/cd/argocd/argocd-setup.sh

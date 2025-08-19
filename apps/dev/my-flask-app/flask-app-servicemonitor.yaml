@@ -4,7 +4,7 @@ metadata:
   name: my-flask-app
   namespace: dev
   labels:
-    release: prometheus   # must match the Prometheus release
+    release: prometheus   
 spec:
   selector:
     matchLabels:
