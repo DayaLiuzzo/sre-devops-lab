@@ -44,7 +44,7 @@ def test_status_route(client):
 
 def test_metrics_route(client):
     """Test the Prometheus /metrics endpoint."""
-    response = client.get('/metrics')
+    response = client.get('/api/metrics')
     assert response.status_code == 200
     # Check that the content type is Prometheus plaintext
     assert response.content_type.startswith("text/plain")

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dev-my-frontend
+  namespace: argocd
+spec:
+  project: dev-project
+  source:
+    repoURL: https://github.com/DayaLiuzzo/sre-devops-lab.git
+    targetRevision: HEAD
+    path: apps/dev/my-frontend
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
